@@ -1,5 +1,14 @@
 # Pharmaceutical QA AI Agent - Frontend
 
+<div align="center">
+  <img src="https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB" alt="React" />
+  <img src="https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" />
+  <img src="https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="TailwindCSS" />
+  <img src="https://img.shields.io/badge/redux-%23593d88.svg?style=for-the-badge&logo=redux&logoColor=white" alt="Redux" />
+</div>
+
+<br>
+
 This is the frontend client for the Pharmaceutical QA AI platform. It is a stunning, high-performance web application built with **React**, **Vite**, **Redux Toolkit**, and **Tailwind CSS**. 
 
 ## ✨ Key Features
