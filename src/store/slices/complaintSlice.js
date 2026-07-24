@@ -29,10 +29,13 @@ export const saveComplaint = createAsyncThunk(
         ? `${apiUrl}/complaints/${complaintData.dbId}` 
         : `${apiUrl}/complaints`;
         
+      const token = getState().auth?.token || localStorage.getItem('token');
+
       const response = await fetch(url, {
         method: isUpdate ? 'PUT' : 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {})
         },
         body: JSON.stringify(payload)
       });
@@ -95,6 +98,9 @@ const complaintSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase('auth/logout', () => initialState)
+      .addCase('auth/loginUser/fulfilled', () => initialState)
+      .addCase('auth/signupUser/fulfilled', () => initialState)
       .addCase(saveComplaint.pending, (state) => {
         state.saveStatus = 'loading';
         state.saveError = null;

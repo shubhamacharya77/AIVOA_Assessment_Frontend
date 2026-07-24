@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { User, LogOut, ChevronDown, FileText, Settings } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../store/slices/authSlice';
+import { resetForm } from '../../store/slices/complaintSlice';
+import { resetAssistant } from '../../store/slices/aiAssistantSlice';
 import ProfileModal from '../Profile/ProfileModal';
 import PastComplaintsModal from '../Profile/PastComplaintsModal';
 
@@ -28,6 +30,8 @@ const Header = () => {
 
   const handleLogout = () => {
     dispatch(logout());
+    dispatch(resetForm());
+    dispatch(resetAssistant());
   };
 
   const getInitials = (name) => {

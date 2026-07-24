@@ -24,11 +24,13 @@ export const sendMessageToAgent = createAsyncThunk(
   async (messageText, { getState, dispatch }) => {
     const { threadId } = getState().aiAssistant;
     const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
+    const token = getState().auth?.token || localStorage.getItem('token');
     
     const response = await fetch(`${apiUrl}/chat/message`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
       },
       body: JSON.stringify({
         message: messageText,
@@ -56,6 +58,7 @@ export const uploadDocumentToAgent = createAsyncThunk(
   async (file, { getState, dispatch }) => {
     const { threadId } = getState().aiAssistant;
     const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
+    const token = getState().auth?.token || localStorage.getItem('token');
     
     const formData = new FormData();
     formData.append('file', file);
@@ -63,6 +66,9 @@ export const uploadDocumentToAgent = createAsyncThunk(
     
     const response = await fetch(`${apiUrl}/chat/upload`, {
       method: 'POST',
+      headers: {
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+      },
       body: formData,
     });
     
@@ -102,7 +108,15 @@ const aiAssistantSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    const resetState = (state) => {
+      Object.assign(state, initialState);
+      state.threadId = generateThreadId();
+    };
+
     builder
+      .addCase('auth/logout', resetState)
+      .addCase('auth/loginUser/fulfilled', resetState)
+      .addCase('auth/signupUser/fulfilled', resetState)
       .addCase(sendMessageToAgent.pending, (state) => {
         state.isTyping = true;
       })

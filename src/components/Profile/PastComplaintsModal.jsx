@@ -27,7 +27,10 @@ const PastComplaintsModal = ({ isOpen, onClose }) => {
         setLoading(true);
         try {
           const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
-          const response = await fetch(`${apiUrl}/complaints`);
+          const token = localStorage.getItem('token');
+          const response = await fetch(`${apiUrl}/complaints`, {
+            headers: token ? { 'Authorization': `Bearer ${token}` } : {}
+          });
           const data = await response.json();
           if (response.ok && data.data) {
             setComplaints(data.data);
